@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <script src="script.js"></script>
 </head>
-<body>
+<body onload="on_loaded()">
     <div class="container text-center my-5">
         <h1>Virtual Piano</h1>
         <p>Press the following keys to play the notes:</p>
@@ -37,13 +38,15 @@
         </ul>
         <div id="piano" class="d-flex justify-content-center">
             <!-- Piano keys with IDs for JavaScript interaction -->
-            <script src=""></script>
         </div>
         <div id="note-line" class="mt-4">
             <!-- Place Note Line here -->
         </div>
         <!-- Place Buttons here -->
+        <div id="buttons" class="mt-4">
+            <button type="button" class="btn btn-primary" onclick="reset_page()">Reset Page</button>
+            <button type="button" class="btn btn-primary" onclick="clear_sounds()">Clear Sounds</button>
+        </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
