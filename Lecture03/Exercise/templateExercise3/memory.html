@@ -8,12 +8,141 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center my-4">Memory Game</h1>
-        <div id="game-board" class="row justify-content-center">
-            <!-- Card elements will go here -->
-        </div>
+<div class="container">
+    <h1 class="text-center my-4">Memory Game</h1>
+    <div id="win-screen" class="d-none">
+        Good Job! You won!<br>
+        Do you want to try again? <br>
+        <button type="button" class="btn btn-success" onClick="window.location.reload();">Yes! Of Course</button>
     </div>
-    <script src="script.js"></script>
+    <div id="game-board" class="row justify-content-center m-1">
+        <!-- Card elements will go here -->
+    </div>
+</div>
+<script>
+    // Place script code here
+    class Card {
+        constructor(symbol) {
+            this._elementID = null;
+            this._symbol = symbol;
+            this._isSelected = false;
+            this._isMatched = false;
+        }
+    }
+
+    let inputPossible = true;
+    let cardsToMatch = 2; // how many cards of one type there are
+    let cardPairs = 4; // how many pairs there are
+
+    const symbols = ['🍎', '🍌', '🍇', '🍊'];
+    let selectedCards = 0;
+    let matchedCards = 0;
+
+    let cards = initBoard(cardPairs, cardsToMatch, symbols);
+    printCards(cards);
+
+    // returns true/false depending on wether all clicked cards match
+    function isAllSymbolsMatch(cards) // "is" just to indicate it returns a bool
+    {
+        let symbolOccurrences = [];
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i]._isSelected) {
+                let symbolIndex = symbols.indexOf(cards[i]._symbol);
+                if (typeof symbolOccurrences[symbolIndex] === 'undefined')
+                    symbolOccurrences[symbolIndex] = 0;
+                symbolOccurrences[symbolIndex] += 1; // increase the index of the symbol by one
+            }
+        }
+        const maxOccurrence = symbolOccurrences.reduce((a, b) => Math.max(a, b), -Infinity); // modified from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
+        return maxOccurrence === cardsToMatch;
+    }
+
+    function initBoard(cardPairs, cardsToMatch, symbols) {
+        let cards = []
+        for (let symbolIterator = 0; symbolIterator < cardPairs; symbolIterator++) {
+            for (let i = 0; i < cardsToMatch; i++) {
+                cards.push(new Card(symbols[symbolIterator]));
+            }
+        }
+        cards = shuffleCards(cards);
+        return cards;
+    }
+
+    function shuffleCards(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const rdmIdx = Math.floor(Math.random() * i);
+            if (rdmIdx < i)
+                [array[i], array[rdmIdx]] = [array[rdmIdx], array[i]];
+            else
+                [array[i], array[rdmIdx+1]] = [array[rdmIdx+1], array[i]]; // so it cannot "switch with itself"
+        }
+        return array;
+    }
+
+    // flips card, checks when
+    function flipCard(cards, index) {
+        if (!inputPossible || cards[index]._isMatched || cards[index]._isSelected)
+            return;
+
+        cards[index]._isSelected = true;
+        selectedCards++;
+        if (selectedCards === cardsToMatch) {
+            if (isAllSymbolsMatch(cards)) {
+                cards.forEach((element) => {
+                    if (element._isSelected)
+                        element._isMatched = true;
+                });
+
+                matchedCards += selectedCards;
+                if (matchedCards === (cardsToMatch * cardPairs)) {
+                    // win !!
+                    inputPossible = false;
+                    document.getElementById("win-screen").setAttribute('class', "row justify-content-center m-1 d-block text-center");
+                }
+            }
+            selectedCards = 0;
+            inputPossible = false;
+            setTimeout(resetCards, 500);
+        }
+        clearCards();
+        printCards(cards);
+    }
+
+    function resetCards() // flip the back again, 2000 ms (2s)
+    {
+        cards.forEach((element) => element._isSelected = false);
+        inputPossible = true;
+        clearCards();
+        printCards(cards);
+    }
+
+    function clearCards() {
+        document.getElementById("game-board").innerHTML = "";
+    }
+
+    function printCards(cards) {
+        for (let index = 0; index < cards.length; index++) {
+            cards[index]._elementID = "memCard" + index;
+
+            let newNode = document.createElement('button');
+            newNode.id = cards[index]._elementID;
+
+            document.getElementById('game-board').appendChild(newNode);
+            document.getElementById(cards[index]._elementID).setAttribute('onclick', `flipCard(cards, ${index})`);
+
+            if (cards[index]._isSelected === true || cards[index]._isMatched === true) {
+                document.getElementById(cards[index]._elementID).innerText = cards[index]._symbol;
+                if (cards[index]._isMatched)
+                    document.getElementById(cards[index]._elementID).setAttribute('class', `card matched`);
+                else
+                    document.getElementById(cards[index]._elementID).setAttribute('class', `card flipped`);
+            } else {
+                document.getElementById(cards[index]._elementID).innerText = "?";
+                document.getElementById(cards[index]._elementID).setAttribute('class', `card`);
+            }
+        }
+    }
+
+</script>
 </body>
 </html>

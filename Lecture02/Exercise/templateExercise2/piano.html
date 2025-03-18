@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container text-center my-5">
         <h1>Virtual Piano</h1>
@@ -20,17 +22,51 @@
             <li class="list-inline-item"><strong>H</strong> - A</li>
             <li class="list-inline-item"><strong>J</strong> - B</li>
         </ul>
-        <div id="piano" class="d-flex justify-content-center">
-            <!-- Piano keys with IDs for JavaScript interaction -->
-            <div class="key" id="keyC">C</div>
-            <div class="key" id="keyD">D</div>
-            <div class="key" id="keyE">E</div>
-            <div class="key" id="keyF">F</div>
-            <div class="key" id="keyG">G</div>
-            <div class="key" id="keyA">A</div>
-            <div class="key" id="keyB">B</div>
+        <div class="d-flex justify-content-center">
+            <div id="piano" class="d-flex justify-content-center flex-wrap">
+                <!-- Piano keys with IDs for JavaScript interaction -->
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyC">C<audio id="keyCaudio" src="./sounds/C.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyD">D<audio id="keyDaudio" src="./sounds/D.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyE">E<audio id="keyEaudio" src="./sounds/E.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyG">G<audio id="keyGaudio" src="./sounds/G.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyF">F<audio id="keyFaudio" src="./sounds/F.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyA">A<audio id="keyAaudio" src="./sounds/A.mp3"></audio></div>
+                <div class="key btn btn-light m-1 rounded border border-dark" id="keyB">B<audio id="keyBaudio" src="./sounds/B.mp3"></audio></div>
+                <script>
+                    const keySoundMap = {
+                        "A": "C",
+                        "S": "D",
+                        "D": "E",
+                        "F": "F",
+                        "G": "G",
+                        "H": "A",
+                        "J": "B"
+                    };
+
+                    function playSound(sound)
+                    {
+                        console.log(`playing sound: ${sound}`);
+                        document.getElementById(`key${sound}audio`).play();
+                    }
+                    
+                    // click events
+                    Object.values(keySoundMap).forEach(sound => {
+                        document.getElementById(`key${sound}`).addEventListener("click", function() {
+                            playSound(sound);
+                        });
+                    });
+
+                    // key events
+                    document.addEventListener("keydown", function (event) {
+                        if (keySoundMap[event.key.toUpperCase()]) {
+                            playSound(keySoundMap[event.key.toUpperCase()]);
+                        }
+                    });
+                </script>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
