@@ -1,0 +1,32 @@
+{
+  "keys": [
+    {
+      "note": "C",
+      "keyboard_key": "A"
+    },
+    {
+      "note": "D",
+      "keyboard_key": "S"
+    },
+    {
+      "note": "E",
+      "keyboard_key": "D"
+    },
+    {
+      "note": "F",
+      "keyboard_key": "F"
+    },
+    {
+      "note": "G",
+      "keyboard_key": "G"
+    },
+    {
+      "note": "A",
+      "keyboard_key": "H"
+    },
+    {
+      "note": "B",
+      "keyboard_key": "J"
+    }
+  ]
+}
