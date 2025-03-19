@@ -1,0 +1,23 @@
+{
+  "name": "webprogramming",
+  "version": "1.0.0",
+  "description": "Welcome to the repo for the lecture Web Programming",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build":"tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukasrohatsch/webprogramming.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukasrohatsch/webprogramming/issues"
+  },
+  "homepage": "https://github.com/lukasrohatsch/webprogramming#readme"
+}
